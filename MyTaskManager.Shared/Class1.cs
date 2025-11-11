@@ -1,0 +1,7 @@
+﻿namespace MyTaskManager.Shared
+{
+    public class Class1
+    {
+
+    }
+}
