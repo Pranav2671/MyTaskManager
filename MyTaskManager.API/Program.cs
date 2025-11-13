@@ -1,6 +1,8 @@
+﻿using Microsoft.EntityFrameworkCore;
 using MyTaskManager.API.Data;
 using MyTaskManager.API.Repositories;
-using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
 using static System.Net.WebRequestMethods;
 
 namespace MyTaskManager.API
@@ -21,7 +23,14 @@ namespace MyTaskManager.API
             // Add services to the container.
 
             //Add Controllers (for API endpoints)
-            builder.Services.AddControllers();
+
+            builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.Converters.Add(new System.Text.Json.Serialization.JsonStringEnumConverter());
+                });
+
+
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -44,7 +53,7 @@ namespace MyTaskManager.API
             //checks if the user is allowed to access a specific API endpoint.
             app.UseAuthorization();
 
-            //Maps all controllers which we�ll create
+            //Maps all controllers which we’ll create
             app.MapControllers();
 
             //Starts the web server,listening for HTTP requests.
