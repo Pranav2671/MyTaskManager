@@ -4,6 +4,7 @@ using Refit;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace MyTaskManager.UI.Views
@@ -16,7 +17,7 @@ namespace MyTaskManager.UI.Views
 
         //Refit API client
         private readonly ITaskApi _taskApi;
-        
+
         //ObservableCollection automatically updates the UI when items change
         public ObservableCollection<TaskItem> Tasks { get; set; }
 
@@ -32,6 +33,9 @@ namespace MyTaskManager.UI.Views
 
             // 🔹 Hook into Loaded event instead of calling async in constructor
             this.Loaded += async (s, e) => await LoadTasksAsync();
+
+            TasksDataGrid.CellEditEnding += TasksDataGrid_CellEditEnding;
+
         }
 
 
@@ -55,6 +59,54 @@ namespace MyTaskManager.UI.Views
                 // Show a simple error message if API call fails
                 System.Windows.MessageBox.Show($"Failed to load tasks: {ex.Message}");
             }
+        }
+
+        /// <summary>
+        /// Called when user changes task status in the dropdown.
+        /// </summary>
+
+        private async void TasksDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
+        {
+            if (e.Column.Header.ToString() == "Status")
+            {
+                var task = e.Row.Item as TaskItem;
+                if (task != null)
+                {
+                    try
+                    {
+                        //Update task on API
+                        
+                        System.Windows.MessageBox.Show($"Status for '{task.Title}' updated successfully.");
+                    }
+                    catch (System.Exception ex)
+                    {
+                        System.Windows.MessageBox.Show($"Failed to update status: {ex.Message}");
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Called when user clicks the Edit button.
+        /// Opens an EditTaskWindow (to edit title, due date, etc.)
+        /// </summary>
+
+        private async void EditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            var task = button?.DataContext as TaskItem;
+
+            if (task != null) return;
+
+            var editWindow = new EditTaskWindow(task, _taskApi); //Well create this window next
+            if (editWindow.ShowDialog() == true)
+            {
+                // If user saved changes, refresh the task list
+                await LoadTasksAsync();
+            }
+
+
+
         }
     }
 }

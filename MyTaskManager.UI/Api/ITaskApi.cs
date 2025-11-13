@@ -13,5 +13,11 @@ namespace MyTaskManager.UI.Api
 
         [Post("/api/Tasks")]
         Task<TaskItem> CreateTaskAsync([Body] TaskItem task);
+
+        [Put("/api/Tasks/{id}")]
+        Task<TaskItem> UpdateTaskAsync(string id, [Body] TaskItem task);
+
+        [Delete("/Tasks/{id}")]
+        Task DeleteTaskAsync(string id);
     }
 }

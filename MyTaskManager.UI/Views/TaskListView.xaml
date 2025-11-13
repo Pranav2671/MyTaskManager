@@ -4,20 +4,102 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="300" d:DesignWidth="500">
-    <Grid Margin="10">
-        <!-- DataGrid to display tasks -->
-        <DataGrid x:Name="TasksDataGrid"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  IsReadOnly="True">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto"/>
-                <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*"/>
-                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
-                <DataGridTextColumn Header="Created At" Binding="{Binding CreatedAt}" Width="Auto"/>
-                <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate}" Width="Auto"/>
-            </DataGrid.Columns>
-        </DataGrid>
+             d:DesignHeight="400" d:DesignWidth="700">
+
+    <Grid Background="#F3F4F6">
+
+        <!-- Outer Card -->
+        <Border CornerRadius="12"
+                Background="White"
+                Padding="20"
+                Margin="20"
+                BorderBrush="#D0D7DE"
+                BorderThickness="1">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3" />
+            </Border.Effect>
+
+            <StackPanel>
+
+                <!-- Header -->
+                <TextBlock Text="📋 Task List"
+                           FontSize="22"
+                           FontWeight="Bold"
+                           Foreground="#2563EB"
+                           Margin="0,0,0,10"
+                           HorizontalAlignment="Left" />
+
+                <!-- DataGrid -->
+                <DataGrid x:Name="TasksDataGrid"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          IsReadOnly="False"
+                          RowHeight="35"
+                          AlternatingRowBackground="#F9FAFB"
+                          HeadersVisibility="Column"
+                          GridLinesVisibility="None"
+                          BorderThickness="0"
+                          Padding="5"
+                          Background="WhiteSmoke">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID"
+                                            Binding="{Binding Id}"
+                                            Width="Auto"
+                                            IsReadOnly="True" />
+
+                        <DataGridTextColumn Header="Title"
+                                            Binding="{Binding Title}"
+                                            Width="*" />
+
+                        <DataGridTextColumn Header="Status"
+                                            Binding="{Binding Status}"
+                                            Width="120" />
+
+                        <DataGridTextColumn Header="Created At"
+                                            Binding="{Binding CreatedAt}"
+                                            Width="Auto"
+                                            IsReadOnly="True" />
+
+                        <DataGridTextColumn Header="Due Date"
+                                            Binding="{Binding DueDate}"
+                                            Width="Auto" />
+
+                        <!-- Actions -->
+                        <DataGridTemplateColumn Header="Actions" Width="100">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Click="EditButton_Click"
+                                            Background="#2563EB"
+                                            Foreground="White"
+                                            Padding="6,3"
+                                            FontWeight="SemiBold"
+                                            BorderThickness="0"
+                                            Cursor="Hand"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            Width="70"
+                                            Height="28"
+                                            ToolTip="Edit Task">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="Button">
+                                                <Border Background="{TemplateBinding Background}"
+                                                        CornerRadius="5"
+                                                        Padding="{TemplateBinding Padding}">
+                                                    <ContentPresenter HorizontalAlignment="Center"
+                                                                      VerticalAlignment="Center"
+                                                                      RecognizesAccessKey="True" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                        Edit
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>

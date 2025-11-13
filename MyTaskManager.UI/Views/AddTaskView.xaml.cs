@@ -67,5 +67,13 @@ namespace MyTaskManager.UI.Views
                 MessageBox.Show($"Error: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
+
+        private void ClearFields_Click(object sender, RoutedEventArgs e)
+        {
+            TitleTextBox.Text = string.Empty;
+            StatusComboBox.SelectedIndex = 0; // Reset to first option (like Pending)
+            DueDatePicker.SelectedDate = null;
+        }
+
     }
 }

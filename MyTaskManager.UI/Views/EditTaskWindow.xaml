@@ -1,11 +1,13 @@
-﻿<UserControl x:Class="MyTaskManager.UI.Views.AddTaskView"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             Height="Auto"
-             Width="Auto"
-             Background="#FAFAFA"
-             FontFamily="Segoe UI"
-             FontSize="14">
+﻿<Window x:Class="MyTaskManager.UI.Views.EditTaskWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Edit Task"
+        Height="350"
+        Width="400"
+        WindowStartupLocation="CenterScreen"
+        Background="#FAFAFA"
+        FontFamily="Segoe UI"
+        FontSize="14">
 
     <Border CornerRadius="10"
             Padding="15"
@@ -16,25 +18,25 @@
 
         <StackPanel Width="300">
 
-            <!-- Header -->
-            <TextBlock Text="Add New Task"
+            <!-- Header Title -->
+            <TextBlock Text="Edit Task"
                        FontSize="18"
                        FontWeight="Bold"
                        Margin="0,0,0,15"/>
 
-            <!-- Title -->
+            <!-- Title Field -->
             <TextBlock Text="Title:"/>
             <TextBox x:Name="TitleTextBox"
                      Margin="0,0,0,10"/>
 
-            <!-- Status -->
+            <!-- Status Field -->
             <TextBlock Text="Status:"/>
             <ComboBox x:Name="StatusComboBox"
                       Margin="0,0,0,10">
-                <ComboBoxItem Content="Pending" Tag="0" IsSelected="True"/>
-                <ComboBoxItem Content="InProgress" Tag="1"/>
-                <ComboBoxItem Content="Completed" Tag="2"/>
-                <ComboBoxItem Content="Dropped" Tag="3"/>
+                <ComboBoxItem Content="Pending"/>
+                <ComboBoxItem Content="InProgress"/>
+                <ComboBoxItem Content="Completed"/>
+                <ComboBoxItem Content="Dropped"/>
             </ComboBox>
 
             <!-- Due Date -->
@@ -45,7 +47,7 @@
             <!-- Buttons -->
             <StackPanel Orientation="Horizontal"
                         HorizontalAlignment="Right">
-                <Button Content="Add Task"
+                <Button Content="Save"
                         Width="100"
                         Height="30"
                         Margin="0,0,10,0"
@@ -54,9 +56,9 @@
                         FontWeight="SemiBold"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Click="AddTask_Click"/>
+                        Click="SaveButton_Click"/>
 
-                <Button Content="Clear"
+                <Button Content="Cancel"
                         Width="100"
                         Height="30"
                         Background="#E5E5E5"
@@ -64,9 +66,9 @@
                         FontWeight="SemiBold"
                         BorderThickness="0"
                         Cursor="Hand"
-                        Click="ClearFields_Click"/>
+                        Click="CancelButton_Click"/>
             </StackPanel>
 
         </StackPanel>
     </Border>
-</UserControl>
+</Window>
