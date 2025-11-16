@@ -24,6 +24,8 @@ namespace MyTaskManager.UI.Views
             InitializeComponent();
             _taskApi = taskApi;
         }
+
+
         public AddTaskView() : this(RestService.For<ITaskApi>("https://localhost:7299"))
         {
         }
