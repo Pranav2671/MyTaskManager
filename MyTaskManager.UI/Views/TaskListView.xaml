@@ -43,6 +43,7 @@
                           Background="WhiteSmoke">
 
                     <DataGrid.Columns>
+
                         <DataGridTextColumn Header="ID"
                                             Binding="{Binding Id}"
                                             Width="Auto"
@@ -66,39 +67,71 @@
                                             Width="Auto" />
 
                         <!-- Actions -->
-                        <DataGridTemplateColumn Header="Actions" Width="100">
+                        <DataGridTemplateColumn Header="Actions" Width="160">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Click="EditButton_Click"
-                                            Background="#2563EB"
-                                            Foreground="White"
-                                            Padding="6,3"
-                                            FontWeight="SemiBold"
-                                            BorderThickness="0"
-                                            Cursor="Hand"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            Width="70"
-                                            Height="28"
-                                            ToolTip="Edit Task">
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="Button">
-                                                <Border Background="{TemplateBinding Background}"
-                                                        CornerRadius="5"
-                                                        Padding="{TemplateBinding Padding}">
-                                                    <ContentPresenter HorizontalAlignment="Center"
-                                                                      VerticalAlignment="Center"
-                                                                      RecognizesAccessKey="True" />
-                                                </Border>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                        Edit
-                                    </Button>
+
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
+
+                                        <!-- Edit Button -->
+                                        <Button Click="EditButton_Click"
+                                                Background="#2563EB"
+                                                Foreground="White"
+                                                Padding="6,3"
+                                                FontWeight="SemiBold"
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                Width="70"
+                                                Height="28"
+                                                ToolTip="Edit Task"
+                                                Margin="0,0,8,0">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="5"
+                                                            Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center" />
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            Edit
+                                        </Button>
+
+                                        <!-- Delete Button -->
+                                        <Button Click="DeleteButton_Click"
+                                                Background="#DC2626"
+                                                Foreground="White"
+                                                Padding="6,3"
+                                                FontWeight="SemiBold"
+                                                BorderThickness="0"
+                                                Cursor="Hand"
+                                                Width="70"
+                                                Height="28"
+                                                ToolTip="Delete Task">
+                                            <Button.Template>
+                                                <ControlTemplate TargetType="Button">
+                                                    <Border Background="{TemplateBinding Background}"
+                                                            CornerRadius="5"
+                                                            Padding="{TemplateBinding Padding}">
+                                                        <ContentPresenter HorizontalAlignment="Center"
+                                                                          VerticalAlignment="Center" />
+                                                    </Border>
+                                                </ControlTemplate>
+                                            </Button.Template>
+                                            Delete
+                                        </Button>
+
+                                    </StackPanel>
+
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
+
                     </DataGrid.Columns>
                 </DataGrid>
+
             </StackPanel>
         </Border>
     </Grid>

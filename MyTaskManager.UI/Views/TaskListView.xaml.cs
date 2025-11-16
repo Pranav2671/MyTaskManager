@@ -9,16 +9,10 @@ using System.Windows.Controls;
 
 namespace MyTaskManager.UI.Views
 {
-    /// <summary>
-    /// Interaction logic for TaskListView.xaml
-    /// </summary>
     public partial class TaskListView : UserControl
     {
-
-        //Refit API client
         private readonly ITaskApi _taskApi;
 
-        //ObservableCollection automatically updates the UI when items change
         public ObservableCollection<TaskItem> Tasks { get; set; }
 
         public TaskListView(ITaskApi taskApi)
@@ -27,28 +21,20 @@ namespace MyTaskManager.UI.Views
             _taskApi = taskApi;
 
             Tasks = new ObservableCollection<TaskItem>();
-
-            // Bind the task collection to the ListBox in XAML
             TasksDataGrid.ItemsSource = Tasks;
 
-            // 🔹 Hook into Loaded event instead of calling async in constructor
             this.Loaded += async (s, e) => await LoadTasksAsync();
 
             TasksDataGrid.CellEditEnding += TasksDataGrid_CellEditEnding;
-
         }
 
-
-        /// <summary>
-        /// Calls the API to fetch all tasks asynchronously.
-        /// </summary>
         private async Task LoadTasksAsync()
         {
             try
             {
                 var tasksFromApi = await _taskApi.GetAllTasksAsync();
 
-                Tasks.Clear(); // Clear existing items
+                Tasks.Clear();
                 foreach (var task in tasksFromApi)
                 {
                     Tasks.Add(task);
@@ -56,14 +42,9 @@ namespace MyTaskManager.UI.Views
             }
             catch (System.Exception ex)
             {
-                // Show a simple error message if API call fails
-                System.Windows.MessageBox.Show($"Failed to load tasks: {ex.Message}");
+                MessageBox.Show($"Failed to load tasks: {ex.Message}");
             }
         }
-
-        /// <summary>
-        /// Called when user changes task status in the dropdown.
-        /// </summary>
 
         private async void TasksDataGrid_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
@@ -74,39 +55,69 @@ namespace MyTaskManager.UI.Views
                 {
                     try
                     {
-                        //Update task on API
-                        
-                        System.Windows.MessageBox.Show($"Status for '{task.Title}' updated successfully.");
+                        // TODO: You will add update logic later
+                        MessageBox.Show($"Status for '{task.Title}' updated successfully.");
                     }
                     catch (System.Exception ex)
                     {
-                        System.Windows.MessageBox.Show($"Failed to update status: {ex.Message}");
+                        MessageBox.Show($"Failed to update status: {ex.Message}");
                     }
                 }
             }
         }
-
-        /// <summary>
-        /// Called when user clicks the Edit button.
-        /// Opens an EditTaskWindow (to edit title, due date, etc.)
-        /// </summary>
 
         private async void EditButton_Click(object sender, RoutedEventArgs e)
         {
             var button = sender as Button;
             var task = button?.DataContext as TaskItem;
 
-            if (task != null) return;
+            if (task == null) return;   // FIXED: Your previous code returned when task was NOT null (wrong)
 
-            var editWindow = new EditTaskWindow(task, _taskApi); //Well create this window next
+            var editWindow = new EditTaskWindow(task, _taskApi);
             if (editWindow.ShowDialog() == true)
             {
-                // If user saved changes, refresh the task list
                 await LoadTasksAsync();
             }
-
-
-
         }
+
+        // -----------------------------
+        // DELETE BUTTON CLICK HANDLER
+        // -----------------------------
+        private async void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = sender as Button;
+            if (button == null) return;
+
+            // Get the TaskItem bound to this row
+            var task = button.DataContext as TaskItem;
+            if (task == null) return;
+
+            // Confirmation dialog
+            var result = MessageBox.Show(
+                $"Are you sure you want to delete the task \"{task.Title}\"?",
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning
+            );
+
+            if (result != MessageBoxResult.Yes)
+                return;
+
+            try
+            {
+                // Call your Refit API to delete
+                await _taskApi.DeleteTaskAsync(task.Id);
+
+                MessageBox.Show("Task deleted successfully.", "Deleted", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                // Refresh the task list
+                await LoadTasksAsync();
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show($"Failed to delete task:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
     }
 }

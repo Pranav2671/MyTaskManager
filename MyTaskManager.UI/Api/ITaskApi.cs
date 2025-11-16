@@ -17,7 +17,8 @@ namespace MyTaskManager.UI.Api
         [Put("/api/Tasks/{id}")]
         Task<TaskItem> UpdateTaskAsync(string id, [Body] TaskItem task);
 
-        [Delete("/Tasks/{id}")]
-        Task DeleteTaskAsync(string id);
+        [Delete("/api/Tasks/{id}")]
+        Task DeleteTaskAsync(int id);
+
     }
 }
