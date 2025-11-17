@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using MyTaskManager.UI.Api;
@@ -9,11 +10,13 @@ namespace MyTaskManager.UI.Views
     public partial class TaskListView : UserControl
     {
         private readonly ITaskApi _taskApi;
+        private readonly User _loggedInUser; // currently logged-in user
 
-        public TaskListView(ITaskApi taskApi)
+        public TaskListView(ITaskApi taskApi, User loggedInUser)
         {
             InitializeComponent();
             _taskApi = taskApi;
+            _loggedInUser = loggedInUser;
 
             LoadTasks();
         }
@@ -23,13 +26,16 @@ namespace MyTaskManager.UI.Views
             try
             {
                 var tasks = await _taskApi.GetAllTasksAsync();
-                TasksDataGrid.ItemsSource = tasks;
+
+                // Show only tasks for logged-in user
+                TasksDataGrid.ItemsSource = tasks.FindAll(t => t.OwnerUserId == _loggedInUser.Username);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading tasks from API:\n" + ex.Message);
             }
         }
+
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
@@ -40,16 +46,15 @@ namespace MyTaskManager.UI.Views
             var editWindow = new EditTaskWindow(task, _taskApi);
             editWindow.ShowDialog();
 
+
             // Refresh tasks after save
             LoadTasks();
         }
 
-
         private async void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             var task = (sender as FrameworkElement).DataContext as TaskItem;
-            if (task == null)
-                return;
+            if (task == null) return;
 
             if (MessageBox.Show("Delete this task?", "Confirm", MessageBoxButton.YesNo) != MessageBoxResult.Yes)
                 return;

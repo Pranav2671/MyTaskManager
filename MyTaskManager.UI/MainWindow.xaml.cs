@@ -1,48 +1,63 @@
-﻿using MyTaskManager.UI.Api;
+﻿using MyTaskManager.Shared.Models;
+using MyTaskManager.UI.Api;
 using MyTaskManager.UI.Views;
 using Refit;
 using System.Windows;
 
 namespace MyTaskManager.UI
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// This window hosts all views inside a single ContentControl.
-    /// </summary>
     public partial class MainWindow : Window
     {
-        // Refit API client, shared by all views
         private readonly ITaskApi _taskApi;
+        private readonly IAuthApi _authApi;
+        private User _loggedInUser;
 
         public MainWindow()
         {
             InitializeComponent();
 
-            // Initialize Refit client with the API base URL
+            // Correct Base URL (must include /api)
+            _authApi = RestService.For<IAuthApi>("https://localhost:7299");
             _taskApi = RestService.For<ITaskApi>("https://localhost:7299");
 
-            // Load default view (Task List) on startup
-            MainContent.Content = new TaskListView(_taskApi);
+            // Load the login screen first
+            LoadLoginView();
         }
 
-        /// <summary>
-        /// Handles "View Tasks" button click.
-        /// Loads TaskListView inside MainContent.
-        /// </summary>
-        public void ViewTasks_Click(object sender, RoutedEventArgs e)
+        private void LoadLoginView()
         {
-            // Pass the same _taskApi instance to allow API calls
-            MainContent.Content = new TaskListView(_taskApi);
+            TopMenu.Visibility = Visibility.Collapsed; // hide menu
+            MainContent.Content = new LoginView(_authApi, OnLoginSuccess);
         }
 
-        /// <summary>
-        /// Handles "Add Task" button click.
-        /// Loads AddTaskView inside MainContent.
-        /// </summary>
+        // Called when login is successful
+        private void OnLoginSuccess(User user)
+        {
+            _loggedInUser = user;
+
+            // Show menu after login
+            TopMenu.Visibility = Visibility.Visible;
+
+            // Load task list
+            MainContent.Content = new TaskListView(_taskApi, _loggedInUser);
+        }
+
+        // View Tasks menu button
+        private void ViewTasks_Click(object sender, RoutedEventArgs e)
+        {
+            if (_loggedInUser != null)
+                MainContent.Content = new TaskListView(_taskApi, _loggedInUser);
+            else
+                LoadLoginView();
+        }
+
+        // Add Task menu button
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
-            // Pass the same _taskApi instance to allow API calls
-            MainContent.Content = new AddTaskView(_taskApi);
+            if (_loggedInUser != null)
+                MainContent.Content = new AddTaskView(_taskApi, _loggedInUser);
+            else
+                LoadLoginView();
         }
     }
 }

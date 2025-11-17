@@ -17,16 +17,18 @@ namespace MyTaskManager.UI.Views
     {
 
         private readonly ITaskApi _taskApi;
+        private readonly User _loggedInUser; // store logged-in user
 
 
-        public AddTaskView(ITaskApi taskApi)
+        public AddTaskView(ITaskApi taskApi, User loggedInUser)
         {
             InitializeComponent();
             _taskApi = taskApi;
+            _loggedInUser = loggedInUser; //save user info
         }
 
 
-        public AddTaskView() : this(RestService.For<ITaskApi>("https://localhost:7299"))
+        public AddTaskView() : this(RestService.For<ITaskApi>("https://localhost:7299"), null)
         {
         }
 
@@ -48,7 +50,7 @@ namespace MyTaskManager.UI.Views
                     Title = title,
                     Status = status,
                     DueDate = dueDate,
-                    OwnerUserId = "user1",
+                    OwnerUserId = _loggedInUser.Username,
                     CreatedAt = DateTime.UtcNow
                 };
 

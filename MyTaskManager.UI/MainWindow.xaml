@@ -5,13 +5,19 @@
 
     <DockPanel>
 
-        <!-- Top Navigation -->
-        <StackPanel Orientation="Horizontal" DockPanel.Dock="Top" Background="LightGray" Height="40">
+        <!-- Top Navigation (hidden until login) -->
+        <StackPanel x:Name="TopMenu"
+                    Orientation="Horizontal"
+                    DockPanel.Dock="Top"
+                    Background="LightGray"
+                    Height="40"
+                    Visibility="Collapsed">
+
             <Button Content="View Tasks" Width="100" Margin="5" Click="ViewTasks_Click"/>
             <Button Content="Add Task" Width="100" Margin="5" Click="AddTask_Click"/>
         </StackPanel>
 
-        <!-- Main content area where views will load -->
+        <!-- Main content area -->
         <ContentControl x:Name="MainContent"/>
 
     </DockPanel>
