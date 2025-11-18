@@ -9,135 +9,191 @@
 
     <Grid Background="#F3F4F6">
 
-        <Border CornerRadius="12"
-                Background="White"
-                Padding="20"
-                Margin="20"
-                BorderBrush="#D0D7DE"
-                BorderThickness="1">
-            <Border.Effect>
-                <DropShadowEffect BlurRadius="10"
-                                  ShadowDepth="2"
-                                  Opacity="0.3" />
-            </Border.Effect>
+        <DockPanel Margin="20">
 
-            <StackPanel>
+            <!-- ===========================
+                 LOGOUT BUTTON (TOP-RIGHT)
+            ============================ -->
+            <Button Content="Logout"
+                    DockPanel.Dock="Top"
+                    HorizontalAlignment="Right"
+                    Click="LogoutButton_Click"
+                    Background="#DC2626"
+                    Foreground="White"
+                    Padding="8,4"
+                    FontWeight="SemiBold"
+                    BorderThickness="0"
+                    Cursor="Hand"
+                    Width="80"
+                    Height="30"
+                    Margin="0,0,0,10">
+                <Button.Template>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                CornerRadius="6"
+                                Padding="{TemplateBinding Padding}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center" />
+                        </Border>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
 
-                <TextBlock Text="📋 Task List"
-                           FontSize="22"
-                           FontWeight="Bold"
-                           Foreground="#2563EB"
-                           Margin="0,0,0,10"
-                           HorizontalAlignment="Left" />
+            <!-- ===========================
+                 MAIN CONTENT (TASK LIST)
+            ============================ -->
+            <Border CornerRadius="12"
+                    Background="White"
+                    Padding="20"
+                    BorderBrush="#D0D7DE"
+                    BorderThickness="1">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="10"
+                                      ShadowDepth="2"
+                                      Opacity="0.3" />
+                </Border.Effect>
 
-                <DataGrid x:Name="TasksDataGrid"
-                          AutoGenerateColumns="False"
-                          CanUserAddRows="False"
-                          RowHeight="35"
-                          AlternatingRowBackground="#F9FAFB"
-                          HeadersVisibility="Column"
-                          GridLinesVisibility="None"
-                          BorderThickness="0"
-                          Padding="5"
-                          Background="WhiteSmoke">
+                <StackPanel>
 
-                    <DataGrid.Columns>
+                    <TextBlock Text="📋 Task List"
+                               FontSize="22"
+                               FontWeight="Bold"
+                               Foreground="#2563EB"
+                               Margin="0,0,0,10"
+                               HorizontalAlignment="Left" />
+                    <Button Content="Logout"
+        HorizontalAlignment="Right"
+        Width="90"
+        Height="32"
+        Margin="0,0,0,10"
+        Click="LogoutButton_Click"
+        Background="#DC2626"
+        Foreground="White"
+        BorderThickness="0"
+        Cursor="Hand"
+        FontWeight="SemiBold">
+                        <Button.Template>
+                            <ControlTemplate TargetType="Button">
+                                <Border Background="{TemplateBinding Background}"
+                    CornerRadius="6"
+                    Padding="{TemplateBinding Padding}">
+                                    <ContentPresenter HorizontalAlignment="Center"
+                                  VerticalAlignment="Center" />
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                    </Button>
 
-                        <!-- SERIAL NUMBER COLUMN -->
-                        <DataGridTemplateColumn Header="No." Width="50">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock HorizontalAlignment="Center"
-                                               Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Header}" />
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Header="Title"
-                                            Binding="{Binding Title}"
-                                            Width="*" />
+                    <DataGrid x:Name="TasksDataGrid"
+                              AutoGenerateColumns="False"
+                              CanUserAddRows="False"
+                              RowHeight="35"
+                              AlternatingRowBackground="#F9FAFB"
+                              HeadersVisibility="Column"
+                              GridLinesVisibility="None"
+                              BorderThickness="0"
+                              Padding="5"
+                              Background="WhiteSmoke">
 
-                        <DataGridTextColumn Header="Status"
-                                            Binding="{Binding Status}"
-                                            Width="120" />
+                        <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="Created At"
-                                            Binding="{Binding CreatedAt}"
-                                            Width="Auto"
-                                            IsReadOnly="True" />
+                            <!-- SERIAL NUMBER COLUMN -->
+                            <DataGridTemplateColumn Header="No." Width="50">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock HorizontalAlignment="Center"
+                                                   Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Header}" />
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Header="Due Date"
-                                            Binding="{Binding DueDate}"
-                                            Width="Auto" />
+                            <DataGridTextColumn Header="Title"
+                                                Binding="{Binding Title}"
+                                                Width="*" />
 
-                        <!-- ACTIONS COLUMN -->
-                        <DataGridTemplateColumn Header="Actions"
-                                                Width="160">
-                            <DataGridTemplateColumn.CellTemplate>
-                                <DataTemplate>
+                            <DataGridTextColumn Header="Status"
+                                                Binding="{Binding Status}"
+                                                Width="120" />
 
-                                    <StackPanel Orientation="Horizontal"
-                                                HorizontalAlignment="Center">
+                            <DataGridTextColumn Header="Created At"
+                                                Binding="{Binding CreatedAt}"
+                                                Width="Auto"
+                                                IsReadOnly="True" />
 
-                                        <!-- EDIT BUTTON -->
-                                        <Button Click="EditButton_Click"
-                                                Background="#2563EB"
-                                                Foreground="White"
-                                                Padding="6,3"
-                                                FontWeight="SemiBold"
-                                                BorderThickness="0"
-                                                Cursor="Hand"
-                                                Width="70"
-                                                Height="28"
-                                                Margin="0,0,8,0">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}"
-                                                            CornerRadius="5"
-                                                            Padding="{TemplateBinding Padding}">
-                                                        <ContentPresenter HorizontalAlignment="Center"
-                                                                          VerticalAlignment="Center" />
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                            Edit
-                                        </Button>
+                            <DataGridTextColumn Header="Due Date"
+                                                Binding="{Binding DueDate}"
+                                                Width="Auto" />
 
-                                        <!-- DELETE BUTTON (FIXED) -->
-                                        <Button Click="DeleteButton_Click"
-                                                Background="#DC2626"
-                                                Foreground="White"
-                                                Padding="6,3"
-                                                FontWeight="SemiBold"
-                                                BorderThickness="0"
-                                                Cursor="Hand"
-                                                Width="70"
-                                                Height="28">
-                                            <Button.Template>
-                                                <ControlTemplate TargetType="Button">
-                                                    <Border Background="{TemplateBinding Background}"
-                                                            CornerRadius="5"
-                                                            Padding="{TemplateBinding Padding}">
-                                                        <ContentPresenter HorizontalAlignment="Center"
-                                                                          VerticalAlignment="Center" />
-                                                    </Border>
-                                                </ControlTemplate>
-                                            </Button.Template>
-                                            Delete
-                                        </Button>
+                            <!-- ACTIONS COLUMN -->
+                            <DataGridTemplateColumn Header="Actions" Width="160">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
 
-                                    </StackPanel>
+                                        <StackPanel Orientation="Horizontal"
+                                                    HorizontalAlignment="Center">
 
-                                </DataTemplate>
-                            </DataGridTemplateColumn.CellTemplate>
-                        </DataGridTemplateColumn>
+                                            <!-- EDIT BUTTON -->
+                                            <Button Click="EditButton_Click"
+                                                    Background="#2563EB"
+                                                    Foreground="White"
+                                                    Padding="6,3"
+                                                    FontWeight="SemiBold"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand"
+                                                    Width="70"
+                                                    Height="28"
+                                                    Margin="0,0,8,0">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                              VerticalAlignment="Center" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                                Edit
+                                            </Button>
 
-                    </DataGrid.Columns>
+                                            <!-- DELETE BUTTON -->
+                                            <Button Click="DeleteButton_Click"
+                                                    Background="#DC2626"
+                                                    Foreground="White"
+                                                    Padding="6,3"
+                                                    FontWeight="SemiBold"
+                                                    BorderThickness="0"
+                                                    Cursor="Hand"
+                                                    Width="70"
+                                                    Height="28">
+                                                <Button.Template>
+                                                    <ControlTemplate TargetType="Button">
+                                                        <Border Background="{TemplateBinding Background}"
+                                                                CornerRadius="5"
+                                                                Padding="{TemplateBinding Padding}">
+                                                            <ContentPresenter HorizontalAlignment="Center"
+                                                                              VerticalAlignment="Center" />
+                                                        </Border>
+                                                    </ControlTemplate>
+                                                </Button.Template>
+                                                Delete
+                                            </Button>
 
-                </DataGrid>
+                                        </StackPanel>
 
-            </StackPanel>
-        </Border>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+
+                        </DataGrid.Columns>
+
+                    </DataGrid>
+
+                </StackPanel>
+            </Border>
+
+        </DockPanel>
 
     </Grid>
 </UserControl>

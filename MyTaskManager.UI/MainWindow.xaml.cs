@@ -16,48 +16,47 @@ namespace MyTaskManager.UI
         {
             InitializeComponent();
 
-            // Correct Base URL (must include /api)
+            // Correct Base URL
             _authApi = RestService.For<IAuthApi>("https://localhost:7299");
             _taskApi = RestService.For<ITaskApi>("https://localhost:7299");
 
-            // Load the login screen first
-            LoadLoginView();
+            ShowLoginView();
         }
 
-        private void LoadLoginView()
+        // ---------- NEW CLEAN METHOD ----------
+        public void ShowLoginView()
         {
-            TopMenu.Visibility = Visibility.Collapsed; // hide menu
+            TopMenu.Visibility = Visibility.Collapsed;
             MainContent.Content = new LoginView(_authApi, OnLoginSuccess);
         }
+        // --------------------------------------
 
-        // Called when login is successful
-        private void OnLoginSuccess(User user)
+        // Called after successful login
+        public void OnLoginSuccess(User user)
         {
             _loggedInUser = user;
 
-            // Show menu after login
             TopMenu.Visibility = Visibility.Visible;
 
-            // Load task list
             MainContent.Content = new TaskListView(_taskApi, _loggedInUser);
         }
 
-        // View Tasks menu button
+        // View Tasks
         private void ViewTasks_Click(object sender, RoutedEventArgs e)
         {
             if (_loggedInUser != null)
                 MainContent.Content = new TaskListView(_taskApi, _loggedInUser);
             else
-                LoadLoginView();
+                ShowLoginView();
         }
 
-        // Add Task menu button
+        // Add Task
         private void AddTask_Click(object sender, RoutedEventArgs e)
         {
             if (_loggedInUser != null)
                 MainContent.Content = new AddTaskView(_taskApi, _loggedInUser);
             else
-                LoadLoginView();
+                ShowLoginView();
         }
     }
 }
