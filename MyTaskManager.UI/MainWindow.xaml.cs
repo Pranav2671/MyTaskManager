@@ -17,8 +17,10 @@ namespace MyTaskManager.UI
             InitializeComponent();
 
             // Correct Base URL
-            _authApi = RestService.For<IAuthApi>("https://localhost:7299");
-            _taskApi = RestService.For<ITaskApi>("https://localhost:7299");
+            // Use the fixed port from launchSettings.json
+            _authApi = RestService.For<IAuthApi>("http://localhost:5000");
+            _taskApi = RestService.For<ITaskApi>("http://localhost:5000");
+
 
             ShowLoginView();
         }
