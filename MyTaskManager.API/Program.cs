@@ -42,7 +42,7 @@ namespace MyTaskManager.API
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                //app.UseSwaggerUI();
             }
 
             //Ensures all communication between client and server is encrypted and secure.
