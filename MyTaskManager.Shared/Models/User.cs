@@ -4,9 +4,9 @@
     {
         public int Id { get; set; }
 
-        public string Username { get; set; }
+        public string? Username { get; set; }
 
         // BCrypt hash string (already includes salt inside)
-        public string PasswordHash { get; set; }
+        public string? PasswordHash { get; set; }
     }
 }
