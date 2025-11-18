@@ -18,6 +18,12 @@ namespace MyTaskManager.UI.Views
             _taskApi = taskApi;
             _loggedInUser = loggedInUser;
 
+            // ✅ SERIAL NUMBER FOR EACH ROW
+            TasksDataGrid.LoadingRow += (s, e) =>
+            {
+                e.Row.Header = (e.Row.GetIndex() + 1).ToString();
+            };
+
             LoadTasks();
         }
 
@@ -27,15 +33,16 @@ namespace MyTaskManager.UI.Views
             {
                 var tasks = await _taskApi.GetAllTasksAsync();
 
-                // Show only tasks for logged-in user
-                TasksDataGrid.ItemsSource = tasks.FindAll(t => t.OwnerUserId == _loggedInUser.Username);
+                // Show only tasks for the logged-in user
+                var userTasks = tasks.FindAll(t => t.OwnerUserId == _loggedInUser.Username);
+
+                TasksDataGrid.ItemsSource = userTasks;
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error loading tasks from API:\n" + ex.Message);
             }
         }
-
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
@@ -45,7 +52,6 @@ namespace MyTaskManager.UI.Views
             // Open edit window
             var editWindow = new EditTaskWindow(task, _taskApi);
             editWindow.ShowDialog();
-
 
             // Refresh tasks after save
             LoadTasks();

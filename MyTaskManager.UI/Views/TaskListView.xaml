@@ -4,7 +4,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
-             d:DesignHeight="400" d:DesignWidth="700">
+             d:DesignHeight="400"
+             d:DesignWidth="700">
 
     <Grid Background="#F3F4F6">
 
@@ -15,7 +16,9 @@
                 BorderBrush="#D0D7DE"
                 BorderThickness="1">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="10" ShadowDepth="2" Opacity="0.3" />
+                <DropShadowEffect BlurRadius="10"
+                                  ShadowDepth="2"
+                                  Opacity="0.3" />
             </Border.Effect>
 
             <StackPanel>
@@ -40,22 +43,43 @@
 
                     <DataGrid.Columns>
 
-                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="Auto" IsReadOnly="True" />
+                        <!-- SERIAL NUMBER COLUMN -->
+                        <DataGridTemplateColumn Header="No." Width="50">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock HorizontalAlignment="Center"
+                                               Text="{Binding RelativeSource={RelativeSource AncestorType=DataGridRow}, Path=Header}" />
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
 
-                        <DataGridTextColumn Header="Title" Binding="{Binding Title}" Width="*" />
+                        <DataGridTextColumn Header="Title"
+                                            Binding="{Binding Title}"
+                                            Width="*" />
 
-                        <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="120" />
+                        <DataGridTextColumn Header="Status"
+                                            Binding="{Binding Status}"
+                                            Width="120" />
 
-                        <DataGridTextColumn Header="Created At" Binding="{Binding CreatedAt}" Width="Auto" IsReadOnly="True" />
+                        <DataGridTextColumn Header="Created At"
+                                            Binding="{Binding CreatedAt}"
+                                            Width="Auto"
+                                            IsReadOnly="True" />
 
-                        <DataGridTextColumn Header="Due Date" Binding="{Binding DueDate}" Width="Auto" />
+                        <DataGridTextColumn Header="Due Date"
+                                            Binding="{Binding DueDate}"
+                                            Width="Auto" />
 
-                        <DataGridTemplateColumn Header="Actions" Width="160">
+                        <!-- ACTIONS COLUMN -->
+                        <DataGridTemplateColumn Header="Actions"
+                                                Width="160">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
 
-                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <StackPanel Orientation="Horizontal"
+                                                HorizontalAlignment="Center">
 
+                                        <!-- EDIT BUTTON -->
                                         <Button Click="EditButton_Click"
                                                 Background="#2563EB"
                                                 Foreground="White"
@@ -79,6 +103,7 @@
                                             Edit
                                         </Button>
 
+                                        <!-- DELETE BUTTON (FIXED) -->
                                         <Button Click="DeleteButton_Click"
                                                 Background="#DC2626"
                                                 Foreground="White"
