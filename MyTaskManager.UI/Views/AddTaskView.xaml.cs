@@ -28,7 +28,7 @@ namespace MyTaskManager.UI.Views
         }
 
 
-        public AddTaskView() : this(RestService.For<ITaskApi>("https://localhost:7299"), null)
+        public AddTaskView() : this(RestService.For<ITaskApi>("https://localhost:5000"), null)
         {
         }
 

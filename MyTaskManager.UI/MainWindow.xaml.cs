@@ -16,13 +16,11 @@ namespace MyTaskManager.UI
         {
             InitializeComponent();
 
-            // Correct Base URL
-            // Use the fixed port from launchSettings.json
+            // Base URL
             _authApi = RestService.For<IAuthApi>("http://localhost:5000");
             _taskApi = RestService.For<ITaskApi>("http://localhost:5000");
-
-
             ShowLoginView();
+        
         }
 
         // ---------- NEW CLEAN METHOD ----------
